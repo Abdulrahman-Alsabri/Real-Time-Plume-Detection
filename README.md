@@ -8,7 +8,7 @@ The Plume Detection process starts by deploying a medium size unmanned boat with
 #
 ## Project Schedule
 <table>
-    <thead>
+    <tbody>
         <tr>
             <th align="left"></th>
             <th colspan=4>January</th>
@@ -25,102 +25,292 @@ The Plume Detection process starts by deploying a medium size unmanned boat with
             <th colspan=4>December</th>
         </tr>
         <tr>
-	        <th align="left">Academic Semester</th>
-	        <td rowspan=9></td>
-	        <th colspan=16>Spring 2020</th>
-	        <th rowspan=9 colspan=13>Summer 2020</th>
-	        <th colspan=16>Fall 2020</th>
-	        <td rowspan=9 colspan=2></td>
+            <th align="left">Academic Semester</th>
+            <th rowspan="9"></th>
+            <th colspan=16>Spring 2020</th>
+            <th rowspan="9" colspan=13>Summer 2020</th>
+            <th colspan=16>Fall 2020</th>
+            <td rowspan=9 colspan=2></td>
         </tr>
         <tr>
-	        <th align="left">Objective/Week</th>
-	        <th>01</th>
-	        <th>02</th>
-	        <th>03</th>
-	        <th>04</th>
-	        <th>05</th>
-	        <th>06</th>
-	        <th>07</th>
-	        <th>08</th>
-	        <th>09</th>
-	        <th>10</th>
-	        <th>11</th>
-	        <th>12</th>
-	        <th>13</th>
-	        <th>14</th>
-	        <th>15</th>
-	        <th>16</th>
-	        <th>01</th>
-	        <th>02</th>
-	        <th>03</th>
-	        <th>04</th>
-	        <th>05</th>
-	        <th>06</th>
-	        <th>07</th>
-	        <th>08</th>
-	        <th>09</th>
-	        <th>10</th>
-	        <th>11</th>
-	        <th>12</th>
-	        <th>13</th>
-	        <th>14</th>
-	        <th>15</th>
-	        <th>16</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-	        <th align="left">Concept</th>
-	        <td>1</td>
-	        <td>1</td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
-	        <td></td>
+            <th align="left">Objective/Week</th>
+            <th>01</th>
+            <th>02</th>
+            <th>03</th>
+            <th>04</th>
+            <th>05</th>
+            <th>06</th>
+            <th>07</th>
+            <th>08</th>
+            <th>09</th>
+            <th>10</th>
+            <th>11</th>
+            <th>12</th>
+            <th>13</th>
+            <th>14</th>
+            <th>15</th>
+            <th>16</th>
+            <th>01</th>
+            <th>02</th>
+            <th>03</th>
+            <th>04</th>
+            <th>05</th>
+            <th>06</th>
+            <th>07</th>
+            <th>08</th>
+            <th>09</th>
+            <th>10</th>
+            <th>11</th>
+            <th>12</th>
+            <th>13</th>
+            <th>14</th>
+            <th>15</th>
+            <th>16</th>
         </tr>
         <tr>
-	        <th align="left">Requirements</th>
+            <th align="left">Concept</th>
+            <td>##</td>
+            <td>##</td>
+            <td>##</td>
+            <td>##</td>
+            <td>##</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
-	        <th align="left">Design</th>
+            <th align="left">Requirements</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>##</td>
+            <td>##</td>
+            <td>##</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
-	        <th align="left">Implementation</th>
+            <th align="left">Design</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>##</td>
+            <td>##</td>
+            <td>##</td>
+            <td>##</td>
+            <td>##</td>
+            <td>##</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
-	        <th align="left">Testing</th>
+            <th align="left">Implementation</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>##</td>
+            <td>##</td>
+            <td>##</td>
+            <td>##</td>
+            <td>##</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
-	        <th align="left">Refinement</th>
+            <th align="left">Testing</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
-	        <th align="left">Integration</th>
+            <th align="left">Refinement</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <th align="left">Integration</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>--</td>
+            <td>--</td>
         </tr>
     </tbody>
 </table>
