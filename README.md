@@ -316,7 +316,7 @@ The Plume Detection process starts by deploying a medium size unmanned boat with
 </table>
 #
 ### Important GitHub Commands for Contributors
-##### To clone the repository for the first time, use the following command:
+#### To clone the repository for the first time, use the following command:
 ```
 $ git clone https://github.com/Abdulrahman-Alsabri/Real-Time-Plume-Detection.git
 ```
