@@ -314,3 +314,47 @@ The Plume Detection process starts by deploying a medium size unmanned boat with
         </tr>
     </tbody>
 </table>
+#
+### Important GitHub Commands for Contributors
+##### To clone the repository for the first time, use the following command:
+```
+$ git clone https://github.com/Abdulrahman-Alsabri/Real-Time-Plume-Detection.git
+```
+#
+##### To get the most updated version of a previously cloned repository, use the following commands:
+```
+$ cd /path/of/repo
+$ git fetch origin
+$ git reset --hard origin/master
+```
+#
+##### To view differences/changes of local cloned repository and actual master repository, use the following command:
+```
+$ git status
+```
+Result of command:
+```
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   README.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+#
+##### To "commit" changes of a cloned repository,  use the following commands:
+```
+$ git add .
+$ git commit -m "Message/Description of updated files"
+```
+Result of commands:
+```
+[master 0d5dcc2] Updated
+ 2 files changed, 2 insertions(+)
+ delete mode 100644 .DS_Store
+```
+#
+##### To push commited changes of a cloned repository,  use the following command:
+```
+$ git push origin master
+```
