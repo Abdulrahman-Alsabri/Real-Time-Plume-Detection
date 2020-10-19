@@ -349,9 +349,8 @@ $ git commit -m "Message/Description of updated files"
 ```
 Result of commands:
 ```
-[master 0d5dcc2] Updated
- 2 files changed, 2 insertions(+)
- delete mode 100644 .DS_Store
+[master dcbe558] Update README File
+ 1 file changed, 44 insertions(+)
 ```
 #
 ##### To push commited changes of a cloned repository,  use the following command:
