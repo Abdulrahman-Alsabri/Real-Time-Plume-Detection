@@ -10,6 +10,7 @@ TagManager:
   - waypoint
   - introCameras
   - volume_manager
+  - Minimap_markers
   layers:
   - Default
   - TransparentFX
@@ -28,8 +29,8 @@ TagManager:
   - Player3
   - Player4
   - Otherthing
-  - 
-  - 
+  - Minimap_marker
+  - Minimap_camera
   - 
   - 
   - 

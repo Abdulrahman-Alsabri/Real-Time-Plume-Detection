@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -7,11 +8,18 @@ public class CameraFollow : MonoBehaviour
 
     // declare and initialize needed variables
     public float zoom = 0f;
-    public float zoomSpeed = 5.0f;
+    public float zoomSpeed = 10.0f;
     public float zoomLowerLimit = -3f;
     public float zoomUpperLimit = -17f;
-    public float smoothSpeed = 5f;
+    public float smoothSpeed = 2f;
     public Vector3 offset = new Vector3(0f, 3f, -17f);
+    public Vector3 desiredCamPosition = new Vector3(150f, 300f, 150f);
+    public Vector3 desiredAngles = new Vector3(90f, 0f, 0f);
+    private Vector3 desiredPosition;
+    private Vector3 smoothedPosition;
+
+    public bool isEnabled = true;
+    public bool isSetPath = false;
 
     // Start is called before the first frame update
     void Start()
@@ -35,25 +43,45 @@ public class CameraFollow : MonoBehaviour
      */
     void FixedUpdate()
     {
-        // update the desired position of the camera
-        Vector3 desiredPosition = player.position + offset;
-
-        // smoothens the movement to the desired position
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
-
-        // change camera's position
-        transform.position = smoothedPosition;
-
-        // always keep the camera looking at player
-        transform.LookAt(player);
-
-        // handle zooming
-        zoom = Input.GetAxis("Mouse ScrollWheel");
-        if (((offset.z + (zoom * zoomSpeed)) < zoomLowerLimit) &&
-            ((offset.z + (zoom * zoomSpeed)) >= zoomUpperLimit))
+        if (isEnabled)
         {
-            offset.z += zoom * zoomSpeed;
-        }
+            if (isSetPath)
+            {
+                // update the desired position of the camera
+                desiredPosition = desiredCamPosition;
 
+                // always keep the camera looking at player
+                transform.eulerAngles = desiredAngles;
+
+                if (transform.position.y >= 295)
+                {
+                    isEnabled = false;
+                }
+            }
+            else
+            {
+                // update the desired position of the camera
+                desiredPosition = player.position + offset;
+
+                // always keep the camera looking at player
+                transform.LookAt(player);
+            }
+
+            // smoothens the movement to the desired position
+            smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
+
+            // change camera's position
+            transform.position = smoothedPosition;
+        }
+    }
+
+    private void setCameraToSetPath()
+    {
+        
+    }
+
+    private void setCameraToFollowBoat()
+    {
+        
     }
 }
