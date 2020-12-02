@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using TMPro;
 
 public class SetPath : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class SetPath : MonoBehaviour
     public Plume plumeScript;
     public GameObject pathPointMarker;
     public GameObject readingMarker;
+    public GameObject plumePositionText;
+    public GameObject plumeShapeText;
+    public GameObject plumeOrientationText;
+    public GameObject plumeRandomizationText;
 
     public GameObject respawnPlume;
     public GameObject showHidePlume;
@@ -277,7 +282,15 @@ public class SetPath : MonoBehaviour
             triggerPlumeSpawning = true;
             ToggleGUI(false);
 
-            gameObject.GetComponentInChildren<Text>().text = "Save Plume Position";
+            plumePositionText.SetActive(true);
+            plumeShapeText.SetActive(true);
+            plumeOrientationText.SetActive(true);
+            plumeRandomizationText.SetActive(true);
+            plumePositionText.GetComponent<TextMeshProUGUI>().text = "Use Left Mouse Button to Snap a Plume on a specific Point";
+            plumeShapeText.GetComponent<TextMeshProUGUI>().text = "Press 'N' To Get Plume's Next Shape";
+            plumeOrientationText.GetComponent<TextMeshProUGUI>().text = "Press 'O' To Change Plume's Orientation";
+            plumeRandomizationText.GetComponent<TextMeshProUGUI>().text = "Press 'R' To Randomize The Plume";
+            gameObject.GetComponentInChildren<Text>().text = "Save Plume Settings";
         }
 
         // activate setting path
@@ -295,6 +308,10 @@ public class SetPath : MonoBehaviour
                 Destroy(marker);
             }
 
+            plumePositionText.GetComponent<TextMeshProUGUI>().text = "";
+            plumeShapeText.GetComponent<TextMeshProUGUI>().text = "";
+            plumeOrientationText.GetComponent<TextMeshProUGUI>().text = "Define The Path Points For The Boat To Follow";
+            plumeRandomizationText.GetComponent<TextMeshProUGUI>().text = "";
             gameObject.GetComponentInChildren<Text>().text = "Save Path Points";
         }
 
@@ -312,6 +329,16 @@ public class SetPath : MonoBehaviour
             camFollowScript.isEnabled = true;
             buttonCounter = 0;
             ToggleGUI(true);
+
+            plumePositionText.GetComponent<TextMeshProUGUI>().text = "";
+            plumeShapeText.GetComponent<TextMeshProUGUI>().text = "";
+            plumeOrientationText.GetComponent<TextMeshProUGUI>().text = "";
+            plumeRandomizationText.GetComponent<TextMeshProUGUI>().text = "";
+
+            plumePositionText.SetActive(false);
+            plumeShapeText.SetActive(false);
+            plumeOrientationText.SetActive(false);
+            plumeRandomizationText.SetActive(false);
 
             gameObject.GetComponentInChildren<Text>().text = "Set Path";
 

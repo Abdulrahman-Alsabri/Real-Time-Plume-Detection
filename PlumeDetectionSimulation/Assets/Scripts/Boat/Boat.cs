@@ -145,7 +145,7 @@ namespace BoatAttack
             if (O2Value <= plumeDetectionValue)
             {
                 isPlumeDetected = true;
-                plumeTextString = "A plume is detected!";
+                plumeTextString = "A plume is detected! Finding the source...";
             }
             else
             {
@@ -225,9 +225,9 @@ namespace BoatAttack
 
                 if (minPlumeValue <= 0.02f || O2Value <= 0.02f)
                 {
+                    plumeTextString = "Source is Found! Mapping Entire Plume...";
                     isSourceFound = true;
                     isSetPathPoints = true;
-                    // getNextPoint = false;
                 }
             }
             else
@@ -292,8 +292,6 @@ namespace BoatAttack
 
                         Vector3 tempNewPos = new Vector3(nextPointX - (plumeWidth / 2) + row, 0f, nextPointZ - (plumeHeight / 2) + col);
                         plumePoints.Enqueue(tempNewPos);
-                        //GameObject marker = Instantiate(pathPointMarker, tempNewPos, Quaternion.identity);
-                        //Debug.Log(tempNewPos);
                     }
                     newPos = plumePoints.Dequeue();
                 }
@@ -307,6 +305,8 @@ namespace BoatAttack
                     }
                     else
                     {
+                        plumeTextString = "Plume successfully mapped!";
+                        UpdateUI();
                         getNextPoint = false;
                     }
                 }
