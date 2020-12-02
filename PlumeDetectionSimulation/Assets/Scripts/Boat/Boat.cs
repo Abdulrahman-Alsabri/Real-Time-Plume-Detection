@@ -13,12 +13,15 @@ namespace BoatAttack
     {
         public Engine engine;
         public Plume plumeScript;
+        public GameObject pathPointMarker;
         public GameObject readingMarker;
         public SetPath setPathScript;
         private Transform boatTransform;
 
-        private float O2Value = 0f;
+        private float O2Value = 100f;
         private Color O2Color;
+        private string plumeTextString = "";
+        public GameObject plumeAlert;
         public GameObject O2Level;
         public GameObject coordinates;
         public GameObject distance;
@@ -27,12 +30,25 @@ namespace BoatAttack
         private int prevXReading, prevZReading = 0;
         private float travelledDistance = 0f;
         private float readingDistance = 10f;
-        private Vector3 newPos;
+        public Vector3 newPos;
         private float _targetSide;
 
         public bool getNextPoint = false;
         private bool pauseBoatMovement = false;
         private int readingDelay = 1;
+
+        public float[,] gridValues = new float[300, 300];
+        public bool[,] isVisited = new bool[300, 300];
+
+        private bool isPlumeDetected = false;
+        private bool isSourceFound = false;
+        private float plumeDetectionValue = 4.5f;
+        private float minPlumeValue = 100f;
+        private int nextPointX = 0;
+        private int nextPointZ = 0;
+        private bool isSetPathPoints = false;
+
+        private Queue<Vector3> plumePoints = new Queue<Vector3>();
 
         private void Awake()
         {
@@ -42,6 +58,15 @@ namespace BoatAttack
         private void Start()
         {
             boatTransform = GetComponent<Transform>();
+
+            for (int i = 0; i < 300; i++)
+            {
+                for (int j = 0; j < 300; j++)
+                {
+                    gridValues[i, j] = -1f;
+                    isVisited[i, j] = false;
+                }
+            }
         }
 
         void FixedUpdate()
@@ -61,7 +86,14 @@ namespace BoatAttack
 
                 UpdateUI();
 
-                moveToNextPoint();
+                if (isPlumeDetected)
+                {
+                    activatePlumeDetection();
+                }
+                else
+                {
+                    moveToNextPoint();
+                }
             }
             else
             {
@@ -94,6 +126,7 @@ namespace BoatAttack
 
         private void UpdateUI()
         {
+            plumeAlert.GetComponent<TextMeshProUGUI>().text = plumeTextString;
             O2Level.GetComponent<TextMeshProUGUI>().text = O2Value.ToString("F2") + " mg/l";
             O2Level.GetComponent<TextMeshProUGUI>().color = O2Color;
             coordinates.GetComponent<TextMeshProUGUI>().text = "Coordinates: (x=" + x.ToString("0") + ", y=" + z.ToString("0") + ")";
@@ -104,21 +137,178 @@ namespace BoatAttack
         {
             Queue<Vector3> pathPoints = setPathScript.pathPoints;
 
-            if ((Mathf.Floor(travelledDistance) % readingDistance) == 0 && !pauseBoatMovement)
+            if ((Mathf.Floor(travelledDistance) % readingDistance) == 0 && !pauseBoatMovement && !isPlumeDetected)
             {
                 TakeReading();
             }
 
-            if ((Mathf.Abs(x - newPos.x) >= 0) && (Mathf.Abs(x - newPos.x) <= 5f) &&
-            (Mathf.Abs(z - newPos.z) >= 0) && (Mathf.Abs(z - newPos.z) <= 5f))
+            if (O2Value <= plumeDetectionValue)
             {
-                if (pathPoints.Count != 0)
+                isPlumeDetected = true;
+                plumeTextString = "A plume is detected!";
+            }
+            else
+            {
+                if ((Mathf.Abs(x - newPos.x) >= 0) && (Mathf.Abs(x - newPos.x) <= 5f) &&
+                (Mathf.Abs(z - newPos.z) >= 0) && (Mathf.Abs(z - newPos.z) <= 5f))
                 {
-                    newPos = pathPoints.Dequeue();
+                    if (pathPoints.Count != 0)
+                    {
+                        newPos = pathPoints.Dequeue();
+                    }
+                    else
+                    {
+                        getNextPoint = false;
+                    }
                 }
-                else
+            }
+
+            if (!pauseBoatMovement)
+            {
+                MoveBoat(newPos);
+            }
+        }
+
+        private void activatePlumeDetection()
+        {
+            if ((Mathf.Floor(travelledDistance) % readingDistance) == 0 && !pauseBoatMovement && isPlumeDetected)
+            {
+                TakeReading();
+            }
+
+            int i = (int)gameObject.transform.position.x;
+            int j = (int)gameObject.transform.position.z;
+            int k = 0;
+            int s = 0;
+
+            if (!isSourceFound)
+            {
+                k = i;
+                s = j;
+                int loopStep = 2;
+
+                if (gridValues[k, s] < 0f)
                 {
-                    getNextPoint = false;
+                    gridValues[k, s] = plumeScript.allValues[k, s];
+                    isVisited[k, s] = true;
+
+                    if (gridValues[k, s] <= minPlumeValue)
+                    {
+                        minPlumeValue = gridValues[k, s];
+                    }
+                }
+
+                for (int row = k - loopStep; row <= k + loopStep; row += loopStep)
+                {
+                    for (int col = s - loopStep; col <= s + loopStep; col += loopStep)
+                    {
+                        if (row != col)
+                        {
+                            gridValues[row, col] = plumeScript.allValues[row, col];
+                            if (gridValues[row, col] < plumeDetectionValue && gridValues[row, col] <= minPlumeValue)
+                            {
+                                minPlumeValue = gridValues[row, col];
+                                nextPointX = row;
+                                nextPointZ = col;
+
+                            }
+                            isVisited[row, col] = true;
+                        }
+                    }
+                }
+
+                if ((Mathf.Abs(x - nextPointX) >= 0) && (Mathf.Abs(x - nextPointX) <= 5f) &&
+                (Mathf.Abs(z - nextPointZ) >= 0) && (Mathf.Abs(z - nextPointZ) <= 5f))
+                {
+                    newPos = new Vector3(nextPointX, 0f, nextPointZ);
+                }
+
+                if (minPlumeValue <= 0.02f || O2Value <= 0.02f)
+                {
+                    isSourceFound = true;
+                    isSetPathPoints = true;
+                    // getNextPoint = false;
+                }
+            }
+            else
+            {
+                if (isSetPathPoints)
+                {
+                    isSetPathPoints = false;
+                    int row = -25;
+                    int col = 0;
+                    int plumeStep = 25;
+                    int plumeWidth = 150 - plumeStep;
+                    int plumeHeight = 150 - plumeStep;
+                    bool isRightDir = true;
+
+                    while (row <= plumeWidth && col <= plumeHeight)
+                    {
+                        if (isRightDir)
+                        {
+                            if (row + plumeStep <= plumeWidth)
+                            {
+                                row += plumeStep;
+                            }
+                            else
+                            {
+                                if (isRightDir)
+                                {
+                                    row -= 0;
+                                } 
+                                else
+                                {
+                                    row -= plumeStep;
+                                }
+                                col += plumeStep;
+                                isRightDir = false;
+                            }
+                        }
+                        else
+                        {
+                            if (row + plumeStep > plumeStep)
+                            {
+                                row -= plumeStep;
+                            }
+                            else
+                            {
+                                if (isRightDir)
+                                {
+                                    row += plumeStep;
+                                }
+                                else
+                                {
+                                    row += 0;
+                                }
+                                isRightDir = true;
+                                col += plumeStep;
+                            }
+                        }
+
+                        if (col > plumeHeight)
+                        {
+                            break;
+                        }
+
+                        Vector3 tempNewPos = new Vector3(nextPointX - (plumeWidth / 2) + row, 0f, nextPointZ - (plumeHeight / 2) + col);
+                        plumePoints.Enqueue(tempNewPos);
+                        //GameObject marker = Instantiate(pathPointMarker, tempNewPos, Quaternion.identity);
+                        //Debug.Log(tempNewPos);
+                    }
+                    newPos = plumePoints.Dequeue();
+                }
+
+                if ((Mathf.Abs(x - newPos.x) >= 0) && (Mathf.Abs(x - newPos.x) <= 5f) &&
+                (Mathf.Abs(z - newPos.z) >= 0) && (Mathf.Abs(z - newPos.z) <= 5f))
+                {
+                    if (plumePoints.Count != 0)
+                    {
+                        newPos = plumePoints.Dequeue();
+                    }
+                    else
+                    {
+                        getNextPoint = false;
+                    }
                 }
             }
 
@@ -144,6 +334,7 @@ namespace BoatAttack
                     childRenderer.material.color = O2Color;
                 }
                 O2Value = plumeScript.allValues[i, j];
+                gridValues[i, j] = plumeScript.allValues[i, j];
             }
         }
 

@@ -23,9 +23,15 @@ public class SetPath : MonoBehaviour
     public Queue<Vector3> pathPoints = new Queue<Vector3>();
     public Queue<GameObject> pathPointMarkers = new Queue<GameObject>();
     public Queue<GameObject> pathPointTempMarkers = new Queue<GameObject>();
+    public Queue<GameObject> originalPlumeMarkers = new Queue<GameObject>();
+    public Queue<GameObject> plumeMarkers = new Queue<GameObject>();
 
     private int buttonCounter = 0;
     private bool triggerSettingPathPoints = false;
+    private bool triggerPlumeSpawning = false;
+    private bool isValidSpawnPos = false;
+    private bool isPlumeCreated = false;
+    private int plumeIndex, orientation, plumeX, plumeY, plumeMidX, plumeMidY = 0;
 
 
     void Start()
@@ -99,32 +105,209 @@ public class SetPath : MonoBehaviour
                 }
             }
         }
+        else if (triggerPlumeSpawning && !boat.getNextPoint)
+        {
+            ProjectPlume();
+
+            if (Input.GetButton("N"))
+            {
+                orientation = 0;
+                plumeIndex++;
+                if (plumeIndex >= plumeScript.numberOfPlumes)
+                {
+                    plumeIndex = 0;
+                }
+
+                if (plumeX == 0 || plumeY == 0)
+                {
+                    plumeX = 150 - 75;
+                    plumeY = 150 - 75;
+                }
+
+                isValidSpawnPos = true;
+
+                ProjectPlumeHelper();
+            }
+
+            if (Input.GetButton("O"))
+            {
+                orientation++;
+                if (orientation >= 4)
+                {
+                    orientation = 0;
+                }
+
+                if (plumeX == 0 || plumeY == 0)
+                {
+                    plumeX = 150 - 75;
+                    plumeY = 150 - 75;
+                }
+
+                isValidSpawnPos = true;
+
+                ProjectPlumeHelper();
+            }
+
+            if (Input.GetButton("R"))
+            {
+                isValidSpawnPos = true;
+
+                foreach (var marker in plumeMarkers)
+                {
+                    Destroy(marker);
+                }
+
+                plumeScript.SpawnPlume(true, true);
+
+                isPlumeCreated = false;
+                isValidSpawnPos = false;
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                Vector3 clickPosition = -Vector3.one;
+
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit))
+                {
+                    clickPosition = hit.point;
+                }
+
+                if (clickPosition != -Vector3.one)
+                {
+                    if (!isValidSpawnPos)
+                    {
+                        int halfPlume = 75;
+                        plumeMidX = (int)clickPosition.x;
+                        plumeMidY = (int)clickPosition.z;
+
+                        if (plumeScript.SpawnValidity(plumeMidX - halfPlume, plumeMidY - halfPlume))
+                        {
+                            plumeX = plumeMidX - halfPlume;
+                            plumeY = plumeMidY - halfPlume;
+                            isValidSpawnPos = true;
+                        }
+                        else if (plumeScript.SpawnValidity(plumeMidX - halfPlume, plumeMidY + halfPlume))
+                        {
+                            plumeX = plumeMidX - halfPlume;
+                            plumeY = plumeMidY + halfPlume;
+
+                            isValidSpawnPos = true;
+                        }
+                        else if (plumeScript.SpawnValidity(plumeMidX + halfPlume, plumeMidY - halfPlume))
+                        {
+                            plumeX = plumeMidX + halfPlume;
+                            plumeY = plumeMidY - halfPlume;
+
+                            isValidSpawnPos = true;
+                        }
+                        else if (plumeScript.SpawnValidity(plumeMidX + halfPlume, plumeMidY + halfPlume))
+                        {
+                            plumeX = plumeMidX + halfPlume;
+                            plumeY = plumeMidY + halfPlume;
+
+                            isValidSpawnPos = true;
+                        }
+                    }
+
+
+                }
+
+                ProjectPlumeHelper();
+            }
+        }
+    }
+
+    private void ProjectPlumeHelper()
+    {
+        if (isValidSpawnPos)
+        {
+
+            foreach (var marker in plumeMarkers)
+            {
+                Destroy(marker);
+            }
+            plumeScript.SpawnPlume(false, false, plumeIndex, orientation, plumeX, plumeY);
+            isPlumeCreated = false;
+            isValidSpawnPos = false;
+
+            /*
+            */
+        }
+        else
+        {
+
+        }
+    }
+
+    public void ProjectPlume()
+    {
+        if (!isPlumeCreated)
+        {
+            isPlumeCreated = true;
+            for (int i = plumeScript.plumeX1; i < plumeScript.plumeX2; i += 5)
+            {
+                for (int j = plumeScript.plumeY1; j < plumeScript.plumeY2; j += 5)
+                {
+                    GameObject marker = Instantiate(pathPointMarker, new Vector3(i, 0f, j), Quaternion.identity);
+                    foreach (Transform child in marker.transform)
+                    {
+                        MeshRenderer childRenderer = child.GetComponent<MeshRenderer>();
+                        childRenderer.material.color = boat.getRGB(plumeScript.allValuesZeroToOne[i, j]);
+                    }
+                    plumeMarkers.Enqueue(marker);
+                }
+            }
+        }
     }
 
     public void triggerClick()
     {
         buttonCounter++;
 
-        // activate setting path
+        // set plume position
         if (buttonCounter == 1)
         {
             boat.getNextPoint = false;
             pathPoints.Clear();
             camFollowScript.isSetPath = true;
-            triggerSettingPathPoints = true;
+            triggerSettingPathPoints = false;
+            triggerPlumeSpawning = true;
             ToggleGUI(false);
+
+            gameObject.GetComponentInChildren<Text>().text = "Save Plume Position";
+        }
+
+        // activate setting path
+        if (buttonCounter == 2)
+        {
+            boat.getNextPoint = false;
+            pathPoints.Clear();
+            camFollowScript.isSetPath = true;
+            triggerSettingPathPoints = true;
+            triggerPlumeSpawning = false;
+            ToggleGUI(false);
+
+            foreach (var marker in plumeMarkers)
+            {
+                Destroy(marker);
+            }
 
             gameObject.GetComponentInChildren<Text>().text = "Save Path Points";
         }
 
         // save changes and reset button
-        else if (buttonCounter == 2)
+        else if (buttonCounter == 3)
         {
             foreach (var marker in pathPointMarkers)
             {
                 Destroy(marker);
             }
+            isPlumeCreated = false;
             triggerSettingPathPoints = false;
+            triggerPlumeSpawning = false;
             camFollowScript.isSetPath = false;
             camFollowScript.isEnabled = true;
             buttonCounter = 0;
